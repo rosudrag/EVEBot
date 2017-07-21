@@ -5,31 +5,19 @@
 
 objectdef obj_targets_ignore
 {
-    variable index:string IgnoreTargets
-	variable iterator IgnoreTarget
+    variable obj_targets_generic GenericTargetsService
     
 	method Initialize()
 	{
-		IgnoreTargets:Insert["Blood Raiders Venture"]
-		IgnoreTargets:Insert["Blood Raiders Bestore"]
-
-		IgnoreTargets:GetIterator[IgnoreTarget]
+        This.GenericTargetsService:Initialize
+        This.GenericTargetsService:AddFilteredItemName["Blood Raiders Venture"]
+        This.GenericTargetsService:AddFilteredItemName["Blood Raiders Bestower"]
+        This.GenericTargetsService:AddFilteredItemName["Blood Raiders Impel"]
         UI:UpdateConsole["obj_targets_ignore: Initialized", LOG_MINOR]
 	}
 
     member:bool IsIgnoredTarget(string name)
 	{
-        ; Loop through the ignored targets
-        if ${IgnoreTarget:First(exists)}
-        do
-        {
-            if ${name.Find[${IgnoreTarget.Value}]} > 0
-            {
-                return TRUE
-            }
-        }
-        while ${IgnoreTarget:Next(exists)}
-
-        return FALSE
+        return This.GenericTargetsService.IsFilteredItem[name]
 	}
 }

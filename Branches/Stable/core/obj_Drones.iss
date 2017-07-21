@@ -101,6 +101,11 @@ objectdef obj_Drones
 		return ${This.ActiveDroneIDList.Used}
 	}
 
+	member:bool AreDronesInSpace()
+	{
+		return ${This.DronesInSpace} > 0;
+	}
+
 	member:bool CombatDroneShortage()
 	{
 		if !${This.DronesReady}

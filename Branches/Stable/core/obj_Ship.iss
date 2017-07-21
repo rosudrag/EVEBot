@@ -2055,12 +2055,12 @@ objectdef obj_Ship
 		This.Drones:ReturnAllToDroneBay
 		This:Deactivate_SensorBoost
 
-		if ${This.Drones.WaitingForDrones}
+		if ${This.Drones.WaitingForDrones} || ${This.Drones.AreDronesInSpace}
 		{
 			UI:UpdateConsole["Drone deployment already in process, delaying warp (${This.Drones.WaitingForDrones})", LOG_CRITICAL]
 			do
 			{
-				wait 1
+				wait 50
 			}
 			while ${This.Drones.WaitingForDrones}
 		}

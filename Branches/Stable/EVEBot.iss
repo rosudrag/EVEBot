@@ -36,6 +36,10 @@
 #include core/obj_Fleet.iss
 
 #include core/targets/obj_targets_ignore.iss
+#include core/targets/obj_targets_special.iss
+#include core/targets/obj_targets_special_loot.iss
+#include core/targets/obj_targets_generic.iss
+#include core/targets/obj_targets_priority.iss
 
 /* Behavior/Mode Includes */
 #include Behaviors/obj_Courier.iss
