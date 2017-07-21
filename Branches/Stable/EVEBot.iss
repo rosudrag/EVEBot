@@ -35,6 +35,8 @@
 #include core/obj_Autopilot.iss
 #include core/obj_Fleet.iss
 
+#include core/targets/obj_targets_ignore.iss
+
 /* Behavior/Mode Includes */
 #include Behaviors/obj_Courier.iss
 #include Behaviors/obj_StealthHauler.iss

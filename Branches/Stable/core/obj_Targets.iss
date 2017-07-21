@@ -75,6 +75,8 @@ objectdef obj_Targets
 	variable string m_SpecialTargetToLootName
 	variable set DoNotKillList
 	variable bool CheckedSpawnValues = FALSE
+
+	variable obj_targets_ignore TargetIgnoreService
 	
 	;	Used to track entities that are locked or being locked
 	variable index:entity LockedOrLocking
@@ -82,6 +84,8 @@ objectdef obj_Targets
 
 	method Initialize()
 	{
+		This.TargetIgnoreService:Initialize
+
 		m_SpecialTargetPresent:Set[FALSE]
 		m_SpecialTargetToLootPresent:Set[FALSE]
 
@@ -404,16 +408,11 @@ objectdef obj_Targets
 		SpecialTargetsToLoot:Insert["Selynne Mardakar"]
 		SpecialTargetsToLoot:Insert["Vizan Ankonin"]
 
-		;Targets to ignore
-		IgnoreTargets:Insert["Blood Raiders Venture"]
-		IgnoreTargets:Insert["Blood Raiders Bestore"]
-
 		; Get the iterators
 		PriorityTargets:GetIterator[PriorityTarget]
 		ChainTargets:GetIterator[ChainTarget]
 		SpecialTargets:GetIterator[SpecialTarget]
 		SpecialTargetsToLoot:GetIterator[SpecialTargetToLoot]
-		IgnoreTargets:GetIterator[IgnoreTarget]
 
         DoNotKillList:Clear
 	}
@@ -434,22 +433,6 @@ objectdef obj_Targets
 	member:bool SpecialTargetToLootPresent()
 	{
 		return ${m_SpecialTargetToLootPresent}
-	}
-
-	member:bool IsIgnoredTarget(string name)
-	{
-			; Loop through the ignored targets
-			if ${IgnoreTarget:First(exists)}
-			do
-			{
-				if ${name.Find[${IgnoreTarget.Value}]} > 0
-				{
-					return TRUE
-				}
-			}
-			while ${IgnoreTarget:Next(exists)}
-
-			return FALSE
 	}
 
 	member:bool IsPriorityTarget(string name)
@@ -774,7 +757,7 @@ objectdef obj_Targets
             }
 
 			; ignore ignored target
-			if ${This.IsIgnoredTarget[${Target.Value.Name}]}
+			if ${This.TargetIgnoreService.IsIgnoredTarget[${Target.Value.Name}]}
             {
 				UI:UpdateConsole["NPC: ignoring ${Target.value.Name}"]
 				DoTarget:Set[FALSE]
