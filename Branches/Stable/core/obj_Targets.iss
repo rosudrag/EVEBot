@@ -59,6 +59,9 @@ objectdef obj_Targets
 	variable index:string SpecialTargets
 	variable iterator SpecialTarget
 
+	variable index:string IgnoreTargets
+	variable iterator IgnoreTarget
+
 	variable index:string SpecialTargetsToLoot
 	variable iterator SpecialTargetToLoot
 
@@ -401,11 +404,16 @@ objectdef obj_Targets
 		SpecialTargetsToLoot:Insert["Selynne Mardakar"]
 		SpecialTargetsToLoot:Insert["Vizan Ankonin"]
 
+		;Targets to ignore
+		IgnoreTargets:Insert["Blood Raiders Venture"]
+		IgnoreTargets:Insert["Blood Raiders Bestore"]
+
 		; Get the iterators
 		PriorityTargets:GetIterator[PriorityTarget]
 		ChainTargets:GetIterator[ChainTarget]
 		SpecialTargets:GetIterator[SpecialTarget]
 		SpecialTargetsToLoot:GetIterator[SpecialTargetToLoot]
+		IgnoreTargets:GetIterator[IgnoreTarget]
 
         DoNotKillList:Clear
 	}
@@ -426,6 +434,22 @@ objectdef obj_Targets
 	member:bool SpecialTargetToLootPresent()
 	{
 		return ${m_SpecialTargetToLootPresent}
+	}
+
+	member:bool IsIgnoredTarget(string name)
+	{
+			; Loop through the ignored targets
+			if ${IgnoreTarget:First(exists)}
+			do
+			{
+				if ${name.Find[${IgnoreTarget.Value}]} > 0
+				{
+					return TRUE
+				}
+			}
+			while ${IgnoreTarget:Next(exists)}
+
+			return FALSE
 	}
 
 	member:bool IsPriorityTarget(string name)
@@ -746,6 +770,13 @@ objectdef obj_Targets
             ; override DoTarget to protect partially spawned chains
             if ${DoNotKillList.Contains[${Target.Value.ID}]}
             {
+				DoTarget:Set[FALSE]
+            }
+
+			; ignore ignored target
+			if ${This.IsIgnoredTarget[${Target.Value.Name}]}
+            {
+				UI:UpdateConsole["NPC: ignoring ${Target.value.Name}"]
 				DoTarget:Set[FALSE]
             }
 
