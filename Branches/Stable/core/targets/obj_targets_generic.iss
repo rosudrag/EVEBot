@@ -9,16 +9,16 @@ objectdef obj_targets_generic
     
 	method Initialize()
 	{
-		FilteredItems:GetIterator[FilteredItem]
 	}
 
     method AddFilteredItemName(string name)
     {
-        FilteredItems:Insert[name]
+        FilteredItems:Insert[${name}]
     }
 
     member:bool IsFilteredItem(string name)
 	{
+        FilteredItems:GetIterator[FilteredItem]
         if ${FilteredItem:First(exists)}
         do
         {

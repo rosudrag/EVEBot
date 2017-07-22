@@ -132,6 +132,6 @@ objectdef obj_targets_special_loot
 
     member:bool IsSpecialTargetToLoot(string name)
 	{
-        return This.GenericTargetsService.IsFilteredItem[name];
+        return ${This.GenericTargetsService.IsFilteredItem[${name}]}
 	}
 }

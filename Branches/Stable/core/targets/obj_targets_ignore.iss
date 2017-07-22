@@ -13,11 +13,15 @@ objectdef obj_targets_ignore
         This.GenericTargetsService:AddFilteredItemName["Blood Raiders Venture"]
         This.GenericTargetsService:AddFilteredItemName["Blood Raiders Bestower"]
         This.GenericTargetsService:AddFilteredItemName["Blood Raiders Impel"]
+        This.GenericTargetsService:AddFilteredItemName["Blood Raiders Skiff"]
+        This.GenericTargetsService:AddFilteredItemName["Blood Raiders Exhumer"]
+        This.GenericTargetsService:AddFilteredItemName["Exhumer"]
+        This.GenericTargetsService:AddFilteredItemName["Skiff"]
         UI:UpdateConsole["obj_targets_ignore: Initialized", LOG_MINOR]
 	}
 
     member:bool IsIgnoredTarget(string name)
 	{
-        return This.GenericTargetsService.IsFilteredItem[name]
+        return ${This.GenericTargetsService.IsFilteredItem[${name}]}
 	}
 }

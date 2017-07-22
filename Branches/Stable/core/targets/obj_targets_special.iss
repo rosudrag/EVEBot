@@ -52,7 +52,7 @@ objectdef obj_targets_special
        
     method Initialize()
     {
-        This.GenericTargetsService:Initialize
+		This.SoundService:Initialize
 
 		This.GenericTargetsService:AddFilteredItemName["Gotan Kreiss"]
 		This.GenericTargetsService:AddFilteredItemName["Hakim Stormare"]
@@ -168,7 +168,7 @@ objectdef obj_targets_special
     }
 
 	member:bool IsSpecialTarget(string name)
-	{
-        return This.GenericTargetsService.IsFilteredItem[name];
+	{   
+		return ${This.GenericTargetsService.IsFilteredItem[${name}]}
 	}
 }

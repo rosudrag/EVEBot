@@ -22,7 +22,6 @@ objectdef obj_Ratter
 	method Initialize()
 	{
 		Event[EVENT_ONFRAME]:AttachAtom[This:Pulse]
-
 		BotModules:Insert["Ratter"]
 
 		; Startup in fight mode, so that it checks current belt for rats, if we happen to be in one.

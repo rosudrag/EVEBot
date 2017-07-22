@@ -2057,12 +2057,12 @@ objectdef obj_Ship
 
 		if ${This.Drones.WaitingForDrones} || ${This.Drones.AreDronesInSpace}
 		{
-			UI:UpdateConsole["Drone deployment already in process, delaying warp (${This.Drones.WaitingForDrones})", LOG_CRITICAL]
+			This:Deactivate_AfterBurner[]
 			do
 			{
-				wait 50
+				wait 10
 			}
-			while ${This.Drones.WaitingForDrones}
+			while ${This.Drones.WaitingForDrones} || ${This.Drones.AreDronesInSpace}
 		}
 		variable int Counter = 0
 

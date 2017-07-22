@@ -26,13 +26,14 @@ objectdef obj_Sound
 
 	function PlaySound(string Filename)
 	{
+		UI:UpdateConsole["PlaySound: ${Filename}"]
 		if !${Config.Common.UseSound}
 			return
 
 		if ${Math.Calc64[${m_LastSoundTime} + ${m_SoundDelay}]} < ${LavishScript.RunningTime}
 		{
 			PlaySound "${Filename}"
-			;System:APICall[${System.GetProcAddress[WinMM.dll,PlaySound].Hex},Filename.String,0,"Math.Dec[22001]"]
+			System:APICall[${System.GetProcAddress[WinMM.dll,PlaySound].Hex},Filename.String,0,"Math.Dec[22001]"]
 			m_LastSoundTime:Set[${LavishScript.RunningTime}]
 		}
 	}

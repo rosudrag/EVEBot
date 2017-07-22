@@ -68,6 +68,6 @@ objectdef obj_targets_priority
 
     member:bool IsPriorityTarget(string name)
 	{
-        return This.GenericTargetsService.IsFilteredItem[name];
+        return ${This.GenericTargetsService.IsFilteredItem[${name}]}
 	}
 }
