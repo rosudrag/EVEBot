@@ -118,6 +118,7 @@ objectdef obj_Safespots
 
 	function WarpTo(bool Wait=FALSE)
 	{
+		Ship:WarpPrepare
 		call This.WarpToNextSafeSpot
 		if ${Wait}
 		{

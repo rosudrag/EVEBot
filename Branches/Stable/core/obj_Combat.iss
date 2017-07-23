@@ -228,8 +228,6 @@ objectdef obj_Combat
 		{
 			UI:UpdateConsole["Error: Ship.IsCloaked still true after 5 seconds", LOG_CRITICAL]
 		}
-		;Ship:Offline_Cloak
-		;Ship:Online_Salvager
 
 		; Reload the weapons -if- ammo is below 30% and they arent firing
 		Ship:Reload_Weapons[FALSE]
@@ -264,15 +262,7 @@ objectdef obj_Combat
 		Ship:Activate_TargetPainters
 		Ship:Activate_StasisWebs
 		Ship:Activate_Weapons
-		if ${Me.TargetedByCount} >= ${Me.TargetCount}
-		{
-			Ship.Drones:SendDrones
-		}
-		elseif ${Me.TargetedByCount} < ${Me.TargetCount}
-		{
-; Note - this will break if targetedby is greater than we can target, such as in an anomaly, or low sp char.
-			EVE:Execute[CmdDronesReturnToBay]
-		}
+		Ship.Drones:SendDrones
 	}
 
 	function Flee()

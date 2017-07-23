@@ -63,7 +63,7 @@ objectdef obj_Sound
 		call This.PlaySound WARNSOUND
 	}
 	
-	method Speak(string Phrase, float speed=0.7)
+	method Speak(string Phrase, float speed=1)
 	{
 		if !${Config.Common.UseSound}
 			return
