@@ -2054,10 +2054,10 @@ objectdef obj_Ship
 		}
 		This.Drones:ReturnAllToDroneBay
 		This:Deactivate_SensorBoost
-
+		This:Deactivate_AfterBurner[]
+		
 		if ${This.Drones.WaitingForDrones} || ${This.Drones.AreDronesInSpace}
 		{
-			This:Deactivate_AfterBurner[]
 			do
 			{
 				wait 10

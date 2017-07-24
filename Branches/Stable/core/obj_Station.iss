@@ -292,9 +292,10 @@ objectdef obj_Station
 
 	function Dock()
 	{
-		variable int64 StationID = ${Entity["(GroupID = 15 || GroupID = 1657) && Name = ${Config.Common.HomeStation}"].ID}
+		;variable int64 StationID = ${Entity["(GroupID = 15 || GroupID = 1657) && Name = ${Config.Freighter.Destination}"].ID}
+		variable int64 StationID = ${Config.Freighter.Destination}
 
-		UI:UpdateConsole["Docking - Trying Home station..."]
+		UI:UpdateConsole["Docking - Trying Freighter Destination station..."]
 		if ${StationID} <= 0 || !${Entity[${StationID}](exists)}
 		{
 			UI:UpdateConsole["Warning: Home station not found, finding nearest station"]

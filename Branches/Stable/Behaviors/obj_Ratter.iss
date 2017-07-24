@@ -207,8 +207,6 @@ objectdef obj_Ratter
 		Ship:Activate_Tracking_Computer
 		Ship:Activate_ECCM
 
-
-
 		if ${Targets.TargetNPCs} && ${Social.IsSafe}
 		{
 			if ${Targets.SpecialTargetPresent}

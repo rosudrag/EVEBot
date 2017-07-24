@@ -402,14 +402,7 @@ objectdef obj_Combat
 				${Ship.Drones.DronesInSpace[FALSE]} == 0 && !${Ship.InWarp} && \
 				${Me.TargetCount} > 0
 			{
-				if ${Config.Combat.AnomalyAssistMode}
-				{
-					Ship.Drones:LaunchAll[]
-				}
-				elseif ${Me.TargetCount} >= 1 && ${Me.TargetedByCount} >= ${Me.TargetCount}
-				{
-					Ship.Drones:LaunchAll[]
-				}
+				Ship.Drones:LaunchAll[]
 			}
 		}
 

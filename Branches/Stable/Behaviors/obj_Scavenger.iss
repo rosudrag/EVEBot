@@ -52,7 +52,7 @@ objectdef obj_Scavenger
 		}
 		elseif ${MyShip.UsedCargoCapacity} > ${Math.Calc[${MyShip.CargoCapacity}*.95]}
 		{
-			This.CurrentState:Set["DROPOFFTOCHA"]
+			This.CurrentState:Set["DROPOFFTOSTATION"]
 			return
 		}
 		else
@@ -70,31 +70,49 @@ objectdef obj_Scavenger
 		switch ${This.CurrentState}
 		{
 			case ABORT
-			call Station.Dock
-			break
+				call Station.Dock
+				break
 			case SCAVENGE
-			wait 10
-			call This.SalvageSite
-			;call Asteroids.MoveToRandomBeltBookMark
-			;wait 10
-			;call This.WarpToFirstNonEmptyWreck
-			;wait 10
-			;call This.LootClosestWreck
-			break
+				wait 10
+				if ${Me.InStation}
+				{
+					call Station.Undock
+				}
+				call Belts.WarpToNextBelt
+				call This.SalvageSite
+				;wait 10
+				;call This.WarpToFirstNonEmptyWreck
+				;wait 10
+				;call This.LootClosestWreck
+				break
 			case DROPOFFTOSTATION
-			call Station.Dock
-			wait 100
-			call Cargo.TransferCargoToStationHangar
-			wait 100
-			break
+				call Ship.WarpToBookMarkName "${Config.Freighter.Destination}"
+				wait 100
+				call Cargo.TransferCargoToStationHangar
+				wait 100
+				break
 			case DROPOFFTOCHA
-			call This.DropAtCHA
+				call This.DropAtCHA
 			break
-			case FLEE
-			call This.Flee
+				case FLEE
+				call This.Flee
 			break
-			case IDLE
+				case IDLE
 			break
+		}
+	}
+
+	function DropAtCitadel()
+	{
+		if !${Me.InStation}
+		{
+			call Ship.WarpToBookMarkName "${Config.Freighter.Destination}"
+			wait 100
+		}
+		
+		if ${Me.InStation}
+		{
+			call Cargo.TransferCargoToStationHangar
 		}
 	}
 
