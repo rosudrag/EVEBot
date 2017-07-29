@@ -2773,16 +2773,14 @@ objectdef obj_Ship
 
 	function LockTarget(int64 TargetID)
 	{
-		if ${Config.Combat.SkipFight}
+		if !${Config.Combat.SkipFight}
 		{
-			return
-		}
-
-		if ${Entity[${TargetID}](exists)}
-		{
-			UI:UpdateConsole["Locking ${Entity[${TargetID}].Name}: ${EVEBot.MetersToKM_Str[${Entity[${TargetID}].Distance}]}"]
-			Entity[${TargetID}]:LockTarget
-			wait 1
+			if ${Entity[${TargetID}](exists)}
+			{
+				UI:UpdateConsole["Locking ${Entity[${TargetID}].Name}: ${EVEBot.MetersToKM_Str[${Entity[${TargetID}].Distance}]}"]
+				Entity[${TargetID}]:LockTarget
+				wait 1
+			}
 		}
 	}
 

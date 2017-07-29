@@ -59,26 +59,145 @@ objectdef obj_Targets
 
 	member:bool TargetNPCs()
 	{
+		if ${Config.Combat.SkipFight}
+		{
+			return ${This.ScoutNPCs}
+		}
+		else
+		{
+			return ${This.TargetNPCsClassic}
+		}
+	}
+
+	member:bool ScoutNPCs()
+	{
 		variable index:entity Targets
 		variable iterator Target
 
-		if ${Config.Combat.SkipFight}
+		EVE:QueryEntities[Targets, "CategoryID = CATEGORYID_ENTITY && Distance <= 500000"]
+		Targets:GetIterator[Target]
+
+		if !${Target:First(exists)}
 		{
-			EVE:QueryEntities[Targets, "CategoryID = CATEGORYID_ENTITY && Distance <= 500000"]
-		}
-		else 
-		{
-			/* Me.Ship.MaxTargetRange contains the (possibly) damped value */
-			if ${Ship.TypeID} == TYPE_RIFTER
-			{
-				EVE:QueryEntities[Targets, "CategoryID = CATEGORYID_ENTITY && Distance <= 100000"]
-			}
-			else
-			{
-				EVE:QueryEntities[Targets, "CategoryID = CATEGORYID_ENTITY && Distance <= ${MyShip.MaxTargetRange}"]
-			}
+			UI:UpdateConsole["No npcs found..."]
+			return FALSE
 		}
 
+		variable bool HasTargets = FALSE
+
+		; Start looking for (and locking) priority targets
+		; special targets and chainable targets, only priority
+		; targets will be locked in this loop
+		variable bool HasSpecialTarget = FALSE
+
+		m_SpecialTargetPresent:Set[FALSE]
+		m_SpecialTargetToLootPresent:Set[FALSE]
+
+		; Determine the total spawn value
+		if ${Target:First(exists)} && !${This.CheckedSpawnValues}
+		{
+			This.CheckedSpawnValues:Set[TRUE]
+			do
+			{
+				variable int pos
+				variable string NPCName
+				variable string NPCGroup
+				variable string NPCShipType
+
+				NPCName:Set[${Target.Value.Name}]
+				NPCGroup:Set[${Target.Value.Group}]
+				pos:Set[1]
+				while ${NPCGroup.Token[${pos}, " "](exists)}
+				{
+					NPCShipType:Set[${NPCGroup.Token[${pos}, " "]}]
+					pos:Inc
+				}
+				UI:UpdateConsole["NPC: ${NPCName}(${NPCShipType}) ${EVEBot.ISK_To_Str[${Target.Value.Bounty}]}"]
+
+				switch ${Target.Value.GroupID}
+				{
+					case GROUP_LARGECOLLIDABLEOBJECT
+					case GROUP_LARGECOLLIDABLESHIP
+					case GROUP_LARGECOLLIDABLESTRUCTURE
+					case GROUP_SENTRYGUN
+					case GROUP_CONCORDDRONE
+					case GROUP_CUSTOMSOFFICIAL
+					case GROUP_POLICEDRONE
+					case GROUP_CONVOYDRONE
+					case GROUP_CONVOY
+					case GROUP_FACTIONDRONE
+					case GROUP_BILLBOARD
+						continue
+
+					default
+						break
+				}
+				if ${Target.Value.Bounty} > 0
+				{
+					This.TotalSpawnValue:Inc[${Target.Value.Bounty}]
+				}
+			}
+			while ${Target:Next(exists)}
+			UI:UpdateConsole["NPC: Spawn Value is ${EVEBot.ISK_To_Str[${This.TotalSpawnValue}]}"]
+		}
+
+		if ${Target:First(exists)}
+		{
+			variable int TypeID
+			TypeID:Set[${Target.Value.TypeID}]
+			do
+			{
+	            switch ${Target.Value.GroupID}
+	            {
+					case GROUP_LARGECOLLIDABLEOBJECT
+					case GROUP_LARGECOLLIDABLESHIP
+					case GROUP_LARGECOLLIDABLESTRUCTURE
+					case GROUP_SENTRYGUN
+					case GROUP_CONCORDDRONE
+					case GROUP_CUSTOMSOFFICIAL
+					case GROUP_POLICEDRONE
+					case GROUP_CONVOYDRONE
+					case GROUP_CONVOY
+					case GROUP_FACTIONDRONE
+					case GROUP_BILLBOARD
+						continue
+
+					default
+						break
+	            }
+
+				; Check for a special target
+				if ${This.TargetSpecialService.IsSpecialTarget[${Target.Value.Name}]}
+				{
+					HasSpecialTarget:Set[TRUE]
+					m_SpecialTargetPresent:Set[TRUE]
+					m_SpecialTargetName:Set[${Target.Value.Name}]
+					if ${This.TargetSpecialLootService.IsSpecialTargetToLoot[${Target.Value.Name}]}
+					{
+						m_SpecialTargetToLootPresent:Set[TRUE]
+						m_SpecialTargetToLootName:Set[${Target.Value.Name}]
+					}
+				}
+
+				; Loop through the priority targets
+				if ${This.TargetsPriorityService.IsPriorityTarget[${Target.Value.Name}]}
+				{
+					HasTargets:Set[TRUE]
+				}
+			}
+			while ${Target:Next(exists)}
+		}
+
+		return ${HasTargets}
+	}
+
+	member:bool TargetNPCsClassic()
+	{
+		variable index:entity Targets
+		variable iterator Target
+
+		EVE:QueryEntities[Targets, "CategoryID = CATEGORYID_ENTITY && Distance <= ${MyShip.MaxTargetRange}"]
+		
 		Targets:GetIterator[Target]
 
 		if !${Target:First(exists)}
