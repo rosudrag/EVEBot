@@ -18,7 +18,7 @@ function main()
 	declarevariable ShipService obj_Ship script
 
 
-	echo ${ShipService.HasCovOpsCloak}
+	ShipService:UpdateModuleList
 	
 	;echo ${SpecialTargetsService.IsSpecialTarget["Tairei Namazoth"]}
 	;echo ${IgnoreTargetsService.IsIgnoredTarget["Blood Raiders Skiff"]}

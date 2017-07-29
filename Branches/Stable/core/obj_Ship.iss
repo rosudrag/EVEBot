@@ -614,6 +614,8 @@ objectdef obj_Ship
 			variable int TypeID
 			TypeID:Set[${ModuleIter.Value.ToItem.TypeID}]
 
+			;echo ${ModuleIter.Value.ToItem.Name} ${ModuleIter.Value.ToItem.GroupID}
+
 			if !${ModuleIter.Value(exists)}
 			{
 				UI:UpdateConsole["ERROR: obj_Ship:UpdateModuleList - Null module found. Retrying in a few seconds.", LOG_CRITICAL]
@@ -642,6 +644,9 @@ objectdef obj_Ship
 					break
 				case GROUPID_SHIELD_HARDENER
 				case GROUPID_ARMOR_HARDENERS
+					This.ModuleList_ActiveResists:Insert[${ModuleIter.Value.ID}]
+					break
+				case GROUPID_REACTIVE_ARMOR_HARDENERS
 					This.ModuleList_ActiveResists:Insert[${ModuleIter.Value.ID}]
 					break
 				case GROUP_ENERGYWEAPON
