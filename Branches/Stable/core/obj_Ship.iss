@@ -230,7 +230,7 @@ objectdef obj_Ship
 		if ${aModuleIterator:First(exists)}
 		do
 		{
-			if ${aModuleIterator.Value.MaxVelocityPenalty} == 0
+			if (${aModuleIterator.Value.CPUUsage} != 60 && ${aModuleIterator.Value.CPUUsage} != 30)
 			{
 				rVal:Set[TRUE]
 				break
@@ -2106,6 +2106,7 @@ objectdef obj_Ship
 
 		if (!${Me.ToEntity.IsCloaked} && ${This.HasCovOpsCloak})
 		{
+			UI:UpdateConsole["Bug here"]
 			This:Activate_Cloak[]
 		}
 		while !${This.InWarp}

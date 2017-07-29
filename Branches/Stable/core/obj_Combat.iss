@@ -211,7 +211,14 @@ objectdef obj_Combat
 			case RESTOCK
 				call This.RestockAmmo
 			case FIGHT
-				call This.Fight
+				if ${Config.Combat.SkipFight}
+				{
+					break
+				}
+				else 
+				{
+					call This.Fight
+				}
 				break
 		}
 	}
