@@ -169,6 +169,7 @@ objectdef obj_targets_special
 
 	member:bool IsSpecialTarget(string name)
 	{   
+		UI:UpdateConsole["${name}", LOG_MINOR]
 		return ${This.GenericTargetsService.IsFilteredItem[${name}]}
 	}
 }

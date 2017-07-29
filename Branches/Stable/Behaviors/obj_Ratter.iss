@@ -102,10 +102,24 @@ objectdef obj_Ratter
 		switch ${This.CurrentState}
 		{
 			case MOVE
-				call This.Move
+				if ${Config.Combat.SkipFight}
+				{
+					call This.MoveNoFight
+				}
+				else
+				{
+					call This.Move
+				}
 				break
 			case FIGHT
-				call This.Fight
+				if ${Config.Combat.SkipFight}
+				{
+					call This.NoFight
+				}
+				else 
+				{
+					call This.Fight
+				}
 				break
 			case LOOT
 				call This.Loot
@@ -114,6 +128,25 @@ objectdef obj_Ratter
 				call This.Drop
 				break
 		}
+	}
+
+	function MoveNoFight()
+	{
+		call Belts.WarpToNextBelt ${Config.Combat.WarpRange}
+		Targets:ResetTargets
+
+		; Wait for the rats to warp into the belt. Reports are between 10 and 20 seconds.
+		variable int Count
+		for (Count:Set[0] ; ${Count}<=15 ; Count:Inc)
+		{
+			if (${Targets.NPC})
+			{
+				break
+			}
+			wait 10
+		}
+
+		call This.PlayerCheck
 	}
 
 	function Move()
@@ -201,7 +234,15 @@ objectdef obj_Ratter
 	}
 
 	function Fight()
-	{	/* combat logic */
+	{	
+		UI:UpdateConsole["debug skip fight: ${Config.Combat.SkipFight}"]
+		if ${Config.Combat.SkipFight}
+		{
+			This.CurrentState:Set["MOVE"]
+			return
+		}
+
+		/* combat logic */
 		;; just handle targetting, obj_Combat does the rest
 		Ship:Activate_SensorBoost
 		Ship:Activate_Tracking_Computer
@@ -228,6 +269,20 @@ objectdef obj_Ratter
 				This.CurrentState:Set["IDLE"]
 			}
 		}
+	}
+
+	function NoFight()
+	{	
+		if ${Targets.TargetNPCs}
+		{
+			if ${Targets.SpecialTargetPresent}
+			{
+				UI:UpdateConsole["Special spawn Detected - ${Targets.m_SpecialTargetName}!", LOG_CRITICAL]
+				call Sound.PlayDetectSound
+			}
+		}
+
+		This.CurrentState:Set["MOVE"]
 	}
 
 	function Loot()

@@ -62,15 +62,23 @@ objectdef obj_Targets
 		variable index:entity Targets
 		variable iterator Target
 
-		/* Me.Ship.MaxTargetRange contains the (possibly) damped value */
-		if ${Ship.TypeID} == TYPE_RIFTER
+		if ${Config.Combat.SkipFight}
 		{
-			EVE:QueryEntities[Targets, "CategoryID = CATEGORYID_ENTITY && Distance <= 100000"]
+			EVE:QueryEntities[Targets, "CategoryID = CATEGORYID_ENTITY && Distance <= 500000"]
 		}
-		else
+		else 
 		{
-			EVE:QueryEntities[Targets, "CategoryID = CATEGORYID_ENTITY && Distance <= ${MyShip.MaxTargetRange}"]
+			/* Me.Ship.MaxTargetRange contains the (possibly) damped value */
+			if ${Ship.TypeID} == TYPE_RIFTER
+			{
+				EVE:QueryEntities[Targets, "CategoryID = CATEGORYID_ENTITY && Distance <= 100000"]
+			}
+			else
+			{
+				EVE:QueryEntities[Targets, "CategoryID = CATEGORYID_ENTITY && Distance <= ${MyShip.MaxTargetRange}"]
+			}
 		}
+
 		Targets:GetIterator[Target]
 
 		if !${Target:First(exists)}

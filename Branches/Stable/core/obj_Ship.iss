@@ -1703,7 +1703,7 @@ objectdef obj_Ship
 		call This.WarpPrepare
 		while ${Entity[${Id}].Distance} >= WARP_RANGE
 		{
-			UI:UpdateConsole["Warping to ${Entity[${Id}].Name} @ ${EVEBot.MetersToKM_Str[${WarpInDistance}]}"]
+			UI:UpdateConsole["Warping to ${Entity[${Id}].Name} @ ${EVEBot.MetersToKM_Str[${WarpInDistance}]}", LOG_CRITICAL]
 			while !${This.WarpEntered}
 			{
 				if ${WarpFleet}
@@ -2772,6 +2772,11 @@ objectdef obj_Ship
 
 	function LockTarget(int64 TargetID)
 	{
+		if ${Config.Combat.SkipFight}
+		{
+			return
+		}
+
 		if ${Entity[${TargetID}](exists)}
 		{
 			UI:UpdateConsole["Locking ${Entity[${TargetID}].Name}: ${EVEBot.MetersToKM_Str[${Entity[${TargetID}].Distance}]}"]

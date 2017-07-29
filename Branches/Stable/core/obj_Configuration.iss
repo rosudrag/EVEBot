@@ -745,6 +745,7 @@ objectdef obj_Configuration_Combat
 		This.CombatRef:AddSetting[MinimumShieldPct, 25]
 		This.CombatRef:AddSetting[MinimumCapPct, 5]
 		This.CombatRef:AddSetting[AlwaysShieldBoost, FALSE]
+		This.CombatRef:AddSetting[SkipFight, FALSE]
 		This.CombatRef:AddSetting[Launch Combat Drones, TRUE]
 		This.CombatRef:AddSetting[Run On Low Ammo, FALSE]
 		This.CombatRef:AddSetting[Run On Low Cap, FALSE]
@@ -1179,9 +1180,19 @@ objectdef obj_Configuration_Combat
 		return ${This.CombatRef.FindSetting[LootMyKills, FALSE]}
 	}
 
+	member:bool SkipFight()
+	{
+		return ${This.CombatRef.FindSetting[SkipFight, FALSE]}
+	}
+
 	method SetLootMyKills(bool value)
 	{
 		This.CombatRef:AddSetting[LootMyKills, ${value}]
+	}
+
+	method SetSkipFight(bool value)
+	{
+		This.CombatRef:AddSetting[SkipFight, ${value}]
 	}
 }
 
