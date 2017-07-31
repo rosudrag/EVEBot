@@ -68,7 +68,7 @@ objectdef obj_Sound
 		if !${Config.Common.UseSound}
 			return
 
-		; Spelling below is to help the speech engine prononce it right since we don't have PromptBuilder support for the speech SDK in IS
-		uplink Speech:Speak[-speed,${Speed},"EEVEBautt: ${Phrase}"]
+		; Spelling below is to help the speech engine prononce it right since we don't have PromptBuilder support for the speech SDK in IS EEVEBautt
+		uplink Speech:Speak[-speed,${Speed},"${Phrase}"]
 	}
 }

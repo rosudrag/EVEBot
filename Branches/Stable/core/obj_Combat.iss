@@ -277,7 +277,7 @@ objectdef obj_Combat
 		This.CurrentState:Set["FLEE"]
 		if !${This.Fled}
 		{
-			Sound:Speak["Fleeing to safespot! Aura, I need warp speed in three minutes or we're all dead!", 1.1]
+			Sound:Speak["Fleeing!", 1.1]
 		}
 		This.Fled:Set[TRUE]
 		EVE:Execute[CmdDronesReturnToBay]
