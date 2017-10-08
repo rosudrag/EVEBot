@@ -359,6 +359,7 @@ objectdef obj_Freighter
 			}
 			else
 			{	/* this must be a source station, pickup stuff */
+				UI:UpdateConsole["DEBUG: this must be a source station, pickup stuff"]
 				call Cargo.TransferCargoToShip
 				if ${Cargo.LastTransferComplete}
 				{

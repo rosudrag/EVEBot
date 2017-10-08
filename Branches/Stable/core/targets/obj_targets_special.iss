@@ -49,15 +49,16 @@ Tairei Namazoth
 objectdef obj_targets_special
 {
 	variable obj_targets_generic GenericTargetsService
+	variable obj_targets_generic OfficersTargetsService
        
     method Initialize()
     {
 		This.SoundService:Initialize
 
-		This.GenericTargetsService:AddFilteredItemName["Gotan Kreiss"]
-		This.GenericTargetsService:AddFilteredItemName["Hakim Stormare"]
-		This.GenericTargetsService:AddFilteredItemName["Mizuro Cybon"]
-		This.GenericTargetsService:AddFilteredItemName["Tobias Kruzhoryy"]
+		This.OfficersTargetsService:AddFilteredItemName["Gotan Kreiss"]
+		This.OfficersTargetsService:AddFilteredItemName["Hakim Stormare"]
+		This.OfficersTargetsService:AddFilteredItemName["Mizuro Cybon"]
+		This.OfficersTargetsService:AddFilteredItemName["Tobias Kruzhoryy"]
 
 		; Asteroid Angel Cartel Battleship
 		This.GenericTargetsService:AddFilteredItemName["Domination Cherubim"]
@@ -122,22 +123,22 @@ objectdef obj_targets_special
 		This.GenericTargetsService:AddFilteredItemName["Psycho Thug"]
 
 		; Asteroid Blood Raiders Officers
-		This.GenericTargetsService:AddFilteredItemName["Ahremen Arkah"]
-		This.GenericTargetsService:AddFilteredItemName["Draclira Merlonne"]
-		This.GenericTargetsService:AddFilteredItemName["Raysere Giant"]
-		This.GenericTargetsService:AddFilteredItemName["Tairei Namazoth"]
+		This.OfficersTargetsService:AddFilteredItemName["Ahremen Arkah"]
+		This.OfficersTargetsService:AddFilteredItemName["Draclira Merlonne"]
+		This.OfficersTargetsService:AddFilteredItemName["Raysere Giant"]
+		This.OfficersTargetsService:AddFilteredItemName["Tairei Namazoth"]
 
 		; Asteroid Guristas Officers
-		This.GenericTargetsService:AddFilteredItemName["Estamel Tharchon"]
-		This.GenericTargetsService:AddFilteredItemName["Kaikka Peunato"]
-		This.GenericTargetsService:AddFilteredItemName["Thon Eney"]
-		This.GenericTargetsService:AddFilteredItemName["Vepas Minimala"]
+		This.OfficersTargetsService:AddFilteredItemName["Estamel Tharchon"]
+		This.OfficersTargetsService:AddFilteredItemName["Kaikka Peunato"]
+		This.OfficersTargetsService:AddFilteredItemName["Thon Eney"]
+		This.OfficersTargetsService:AddFilteredItemName["Vepas Minimala"]
 
 		; Asteroid Sansha's Nation Officers
-		This.GenericTargetsService:AddFilteredItemName["Brokara Ryver"]
-		This.GenericTargetsService:AddFilteredItemName["Chelm Soran"]
-		This.GenericTargetsService:AddFilteredItemName["Selynne Mardakar"]
-		This.GenericTargetsService:AddFilteredItemName["Vizan Ankonin"]
+		This.OfficersTargetsService:AddFilteredItemName["Brokara Ryver"]
+		This.OfficersTargetsService:AddFilteredItemName["Chelm Soran"]
+		This.OfficersTargetsService:AddFilteredItemName["Selynne Mardakar"]
+		This.OfficersTargetsService:AddFilteredItemName["Vizan Ankonin"]
 
 		; Asteroid Serpentis Officers
 		This.GenericTargetsService:AddFilteredItemName["Brynn Jerdola"]
@@ -170,6 +171,18 @@ objectdef obj_targets_special
 	member:bool IsSpecialTarget(string name)
 	{   
 		UI:UpdateConsole["${name}", LOG_MINOR]
-		return ${This.GenericTargetsService.IsFilteredItem[${name}]}
+		if ${This.OfficersTargetsService.IsFilteredItem[${name}]}
+		{
+			uplink Speech:Speak["Officer Detected ${name}"]
+			return TRUE
+		}
+
+		if ${This.GenericTargetsService.IsFilteredItem[${name}]}
+		{
+			uplink Speech:Speak["Special Spawn Detected ${name}"]
+			return TRUE
+		}
+
+		return FALSE
 	}
 }
