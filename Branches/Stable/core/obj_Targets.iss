@@ -74,7 +74,7 @@ objectdef obj_Targets
 		variable index:entity Targets
 		variable iterator Target
 
-		EVE:QueryEntities[Targets, "CategoryID = CATEGORYID_ENTITY && Distance <= 500000"]
+		EVE:QueryEntities[Targets, "Bounty > 0 && Distance <= 500000"]
 		Targets:GetIterator[Target]
 
 		if !${Target:First(exists)}
@@ -196,7 +196,7 @@ objectdef obj_Targets
 		variable index:entity Targets
 		variable iterator Target
 
-		EVE:QueryEntities[Targets, "CategoryID = CATEGORYID_ENTITY && Distance <= ${MyShip.MaxTargetRange}"]
+		EVE:QueryEntities[Targets, "Bounty > 0 && Distance <= ${MyShip.MaxTargetRange}"]
 		
 		Targets:GetIterator[Target]
 
@@ -204,7 +204,7 @@ objectdef obj_Targets
 		{
 			if ${Ship.IsDamped}
 			{	/* Ship.MaxTargetRange contains the maximum undamped value */
-				EVE:QueryEntities[Targets, "CategoryID = CATEGORYID_ENTITY && Distance <= ${Ship.MaxTargetRange}"]
+				EVE:QueryEntities[Targets, "Bounty > 0 && Distance <= ${Ship.MaxTargetRange}"]
 				Targets:GetIterator[Target]
 
 				if !${Target:First(exists)}
@@ -556,7 +556,7 @@ objectdef obj_Targets
 		variable index:entity tgtIndex
 		variable iterator tgtIterator
 
-		EVE:QueryEntities[tgtIndex, "CategoryID = CATEGORYID_ENTITY"]
+		EVE:QueryEntities[tgtIndex, "Bounty > 0 && Distance <= 500000"]
 		UI:UpdateConsole["DEBUG: Found ${tgtIndex.Used} entities."]
 
 		tgtIndex:GetIterator[tgtIterator]
@@ -591,7 +591,7 @@ objectdef obj_Targets
 		variable index:entity tgtIndex
 		variable iterator tgtIterator
 
-		EVE:QueryEntities[tgtIndex, "CategoryID = CATEGORYID_ENTITY"]
+		EVE:QueryEntities[tgtIndex, "Bounty > 0 && Distance <= 500000"]
 
 		tgtIndex:GetIterator[tgtIterator]
 		if ${tgtIterator:First(exists)}
