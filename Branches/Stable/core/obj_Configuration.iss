@@ -115,8 +115,8 @@ objectdef obj_Configuration_Common
 		BaseConfig.BaseRef:AddSet[${This.SetName}]
 
 		; We use both so we have an ID to use to set the default selection in the UI.
-		This.CommonRef:AddSetting[Bot Mode,1]
-		This.CommonRef:AddSetting[Bot Mode Name,MINER]
+		This.CommonRef:AddSetting[Bot Mode, 4]
+		This.CommonRef:AddSetting[Bot Mode Name,RATTER]
 		This.CommonRef:AddSetting[Home Station,1]
 		This.CommonRef:AddSetting[Use Development Build,FALSE]
 		This.CommonRef:AddSetting[Drones In Bay,0]

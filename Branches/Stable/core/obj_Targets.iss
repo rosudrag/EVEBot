@@ -74,7 +74,7 @@ objectdef obj_Targets
 		variable index:entity Targets
 		variable iterator Target
 
-		EVE:QueryEntities[Targets, "CategoryID = CATEGORYID_ENTITY && Distance <= 500000"]
+		EVE:QueryEntities[Targets, "CategoryID = 11 && Distance <= 500000"]
 		Targets:GetIterator[Target]
 
 		if !${Target:First(exists)}
@@ -193,10 +193,13 @@ objectdef obj_Targets
 
 	member:bool TargetNPCsClassic()
 	{
+		UI:UpdateConsole["TargetNPCsClassic"]
 		variable index:entity Targets
 		variable iterator Target
 
-		EVE:QueryEntities[Targets, "CategoryID = CATEGORYID_ENTITY && Distance <= ${MyShip.MaxTargetRange}"]
+
+		EVE:QueryEntities[Targets, "CategoryID = 11 && Distance <= ${MyShip.MaxTargetRange}"]
+		echo "TargetCount:" ${Targets.Used}
 		
 		Targets:GetIterator[Target]
 
@@ -204,7 +207,7 @@ objectdef obj_Targets
 		{
 			if ${Ship.IsDamped}
 			{	/* Ship.MaxTargetRange contains the maximum undamped value */
-				EVE:QueryEntities[Targets, "CategoryID = CATEGORYID_ENTITY && Distance <= ${Ship.MaxTargetRange}"]
+				EVE:QueryEntities[Targets, "CategoryID = 11 && Distance <= ${Ship.MaxTargetRange}"]
 				Targets:GetIterator[Target]
 
 				if !${Target:First(exists)}
@@ -354,6 +357,7 @@ objectdef obj_Targets
 					if !${Target.Value.IsLockedTarget} && !${Target.Value.BeingTargeted}
 					{
 						; No, report it and lock it.
+						
 						UI:UpdateConsole["Locking priority target ${Target.Value.Name}"]
 						Target.Value:LockTarget
 					}
@@ -483,6 +487,8 @@ objectdef obj_Targets
 						}
 						else
 						{
+							echo "TargetCount:" ${Target.Value.Distance}
+							
 							UI:UpdateConsole["Locking ${Target.Value.Name}"]
 							Target.Value:LockTarget
 						}
@@ -556,7 +562,7 @@ objectdef obj_Targets
 		variable index:entity tgtIndex
 		variable iterator tgtIterator
 
-		EVE:QueryEntities[tgtIndex, "CategoryID = CATEGORYID_ENTITY"]
+		EVE:QueryEntities[tgtIndex, "CategoryID = 11"]
 		UI:UpdateConsole["DEBUG: Found ${tgtIndex.Used} entities."]
 
 		tgtIndex:GetIterator[tgtIterator]
@@ -591,7 +597,7 @@ objectdef obj_Targets
 		variable index:entity tgtIndex
 		variable iterator tgtIterator
 
-		EVE:QueryEntities[tgtIndex, "CategoryID = CATEGORYID_ENTITY"]
+		EVE:QueryEntities[tgtIndex, "CategoryID = 11"]
 
 		tgtIndex:GetIterator[tgtIterator]
 		if ${tgtIterator:First(exists)}
